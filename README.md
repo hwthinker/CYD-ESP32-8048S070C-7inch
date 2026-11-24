@@ -24,6 +24,10 @@ Project ini siap pakai dengan **PlatformIO**: clone → build → upload, tanpa 
 3. **Driver CH340** jika board tidak muncul sebagai port COM — https://www.wch-ic.com/downloads/CH341SER_EXE.html
 4. Kabel USB **data** (bukan kabel charge saja)
 
+## Firmware siap-flash (tanpa PlatformIO)
+
+Kalau hanya ingin mem-flash board tanpa install VS Code/PlatformIO, gunakan folder [`firmware/`](firmware/). Di dalamnya sudah ada `firmware-merged.bin` (siap flash di alamat `0x0`), binary pendukung, script bantu, dan panduan lengkap esptool: **[firmware/README.md](firmware/README.md)**.
+
 ## Langkah-langkah
 
 ### 1. Download project
