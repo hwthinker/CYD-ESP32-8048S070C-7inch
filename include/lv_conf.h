@@ -1,8 +1,8 @@
-/*
+﻿/*
  * Berasal dari lv_conf_template.h LVGL v9.6.0 (MIT, Copyright (c) 2025 LVGL Kft,
  * lihat LICENSES/MIT-LVGL.txt), via rzeldent/esp32-smartdisplay-demo (GPL-3.0).
  * DIMODIFIKASI 2026-11-24: LV_BUILD_DEMOS & LV_USE_DEMO_WIDGETS = 1,
- * font Montserrat 12/16/18/20/24 = 1, LV_MEM_SIZE = 96 KB, LV_USE_QRCODE = 0.
+ * font Montserrat 12/16/18/20/24 = 1, LV_MEM_SIZE = 80 KB, LV_USE_QRCODE = 0.
  */
 /**
  * @file lv_conf.h
@@ -62,7 +62,12 @@
 
 #if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
 /** Size of the pool `lv_malloc()` allocates from. Needs to be at least 2kB (2048). */
-#define LV_MEM_SIZE (96 * 1024)
+#define LV_MEM_SIZE (80 * 1024)
+
+/** Alokasikan pool LVGL di PSRAM (8 MB) supaya RAM internal lega untuk
+ *  draw buffer RGB yang besar. */
+#define LV_MEM_POOL_INCLUDE <esp_heap_caps.h>
+#define LV_MEM_POOL_ALLOC(size) heap_caps_malloc(size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT)
 
 /** Place the pool at a fixed address instead of allocating it as a normal array.
  *  0: unused.
@@ -156,7 +161,7 @@
 #define LV_COLOR_MIX_ROUND_OFS 0
 
 /** Default display refresh, input device read and animation step period. */
-#define LV_DEF_REFR_PERIOD 33
+#define LV_DEF_REFR_PERIOD 16
 
 /** Used to initialize default sizes such as widget sizes and style paddings. */
 #define LV_DPI_DEF 130

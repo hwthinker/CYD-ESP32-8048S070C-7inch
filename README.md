@@ -154,7 +154,9 @@ Jika demo tidak dipakai lagi, hapus folder `src/lvgl_demo/` dan set `LV_BUILD_DE
 ## Catatan teknis
 
 - **Platform `espressif32@6.13.0`** (Arduino 2.x / ESP-IDF 4.4) wajib — library `esp32-smartdisplay` belum kompatibel dengan Arduino 3.x / IDF 5.
-- **Patch** di `lib/esp32_smartdisplay/include/lvgl_panel_common.h`: `esp_lcd_panel_disp_on_off()` mengembalikan `ESP_ERR_NOT_SUPPORTED` pada panel RGB tanpa pin DISP sehingga board boot-loop. Error tersebut sekarang diabaikan.
+- **Patch 1** — `lib/esp32_smartdisplay/include/lvgl_panel_common.h`: `esp_lcd_panel_disp_on_off()` mengembalikan `ESP_ERR_NOT_SUPPORTED` pada panel RGB tanpa pin DISP sehingga board boot-loop. Error tersebut sekarang diabaikan.
+- **Patch 2 (performa)** — `lv_display_flush_ready()` dipanggil langsung setelah `esp_lcd_panel_draw_bitmap()` (copy RGB sinkron), dan `on_frame_trans_done` dilepas dari `lvgl_panel_st7262_par.c`. Tanpa ini setiap flush menunggu vsync sehingga scroll/grafik patah-patah.
+- **Tuning tampilan 7"** — PCLK **15 MHz**, draw buffer **800×110 (176 KB) di RAM internal**, heap LVGL **80 KB di PSRAM** (`LV_MEM_POOL_ALLOC`), dan `LV_DEF_REFR_PERIOD` **16 ms**. PCLK 16 MHz sempat tearing; 15 MHz paling stabil dan mendekati kehalusan demo manufaktur.
 - **Define hardware** dipindah dari board JSON ke `include/board_8048S070C.h` (force-include via `build_flags`) agar command line compiler tidak melebihi batas 32K karakter Windows.
 - Source demo LVGL ada di folder `demos/` yang tidak di-compile otomatis oleh PlatformIO, karena itu ada wrapper di `src/lvgl_demo/`.
 

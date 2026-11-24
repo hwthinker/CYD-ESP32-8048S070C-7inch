@@ -27,9 +27,11 @@ Project ini secara keseluruhan dirilis di bawah **GNU GPL v3** (lihat [`LICENSE`
 Semua modifikasi dibuat pada **2026-11-24**:
 
 1. `lib/esp32_smartdisplay/include/lvgl_panel_common.h`: `lvgl_setup_panel()` sekarang mengabaikan `ESP_ERR_NOT_SUPPORTED` dari `esp_lcd_panel_disp_on_off()`. Tanpa perubahan ini, panel RGB pada ESP-IDF 4.4 tanpa pin DISP mengalami boot loop.
-2. `lib/esp32_smartdisplay/`: folder `assets/`, `boards/`, `test/`, `platformio.ini`, dan `BOARD_MATRIX.md` dihapus karena tidak dibutuhkan untuk build.
-3. `boards/esp32-8048S070C.json`: define hardware dipindah dari `extra_flags` ke `include/board_8048S070C.h`. Nilainya tidak diubah.
-4. `include/lv_conf.h`: demo Widgets diaktifkan, font Montserrat 12–24 diaktifkan, `LV_MEM_SIZE` dinaikkan ke 96 KB, QR code dinonaktifkan.
+2. `lib/esp32_smartdisplay/include/lvgl_panel_common.h` + `src/lvgl_panel_st7262_par.c`: flush RGB dibuat pipelined — `lv_display_flush_ready()` dipanggil langsung setelah `esp_lcd_panel_draw_bitmap()` dan callback `on_frame_trans_done` dilepas. Tanpa ini setiap flush menunggu vsync sehingga scroll/grafik patah-patah.
+3. `include/board_8048S070C.h`: PCLK dinaikkan ke **15 MHz** dan draw buffer dipindah ke RAM internal **800×110 (176 KB)**.
+4. `include/lv_conf.h`: pool LVGL **80 KB dialokasikan di PSRAM** (`LV_MEM_POOL_ALLOC`), `LV_DEF_REFR_PERIOD` **16 ms**, demo Widgets + font Montserrat 12–24 aktif, QR code nonaktif.
+5. `lib/esp32_smartdisplay/`: folder `assets/`, `boards/`, `test/`, `platformio.ini`, dan `BOARD_MATRIX.md` dihapus karena tidak dibutuhkan untuk build.
+6. `boards/esp32-8048S070C.json`: define hardware dipindah dari `extra_flags` ke `include/board_8048S070C.h`. Nilai pin tidak diubah.
 
 ## Jika membagikan firmware hasil compile (`.bin`)
 

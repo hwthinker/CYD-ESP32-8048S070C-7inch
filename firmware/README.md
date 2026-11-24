@@ -1,4 +1,4 @@
-# Firmware siap-flash — ESP32-8048S070C (7" 800×480, GT911 kapasitif)
+﻿# Firmware siap-flash — ESP32-8048S070C (7" 800×480, GT911 kapasitif)
 
 Folder ini berisi firmware **LVGL 9 Widgets Demo** yang sudah jadi, untuk di-flash **tanpa VS Code / PlatformIO**, hanya dengan **esptool**.
 
@@ -15,7 +15,7 @@ Folder ini berisi firmware **LVGL 9 Widgets Demo** yang sudah jadi, untuk di-fla
 | `flash.bat` | — | Script bantu Windows |
 | `flash.sh` | — | Script bantu Linux/macOS |
 
-Firmware dibangun dari source commit **ee98e9e** (landscape 800×480, touch GT911 kapasitif).
+Firmware dibangun dari source terbaru repository ini, dengan tuning performa: **PCLK 15 MHz**, draw buffer **800×110 di RAM internal**, heap LVGL di **PSRAM**, refresh **16 ms**, dan flush pipelined — versi paling halus yang dicapai untuk board ini.
 
 ## Yang dibutuhkan
 
