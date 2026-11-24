@@ -3,6 +3,23 @@
 #include <Arduino.h>
 #include <esp32_smartdisplay.h>
 
+// Pengukuran CPU% untuk LVGL sysmon (LV_OS_NONE)
+static uint32_t s_busy_us = 0;
+static uint32_t s_total_us = 0;
+
+extern "C" uint32_t esp_sysmon_get_idle(void)
+{
+    uint32_t idle = 100;
+    if (s_total_us > 0)
+    {
+        uint32_t cpu = (uint32_t)((uint64_t)s_busy_us * 100u / s_total_us);
+        idle = (cpu >= 100u) ? 0u : (100u - cpu);
+    }
+    s_busy_us = 0;
+    s_total_us = 0;
+    return idle;
+}
+
 void setup()
 {
     Serial.begin(115200);
@@ -24,5 +41,13 @@ void loop()
     auto const now = millis();
     lv_tick_inc(now - lv_last_tick);
     lv_last_tick = now;
+
+    static uint32_t last_us = micros();
+    uint32_t t0 = micros();
     lv_timer_handler();
+    uint32_t t1 = micros();
+
+    s_busy_us += (t1 - t0);
+    s_total_us += (t1 - last_us);
+    last_us = t1;
 }

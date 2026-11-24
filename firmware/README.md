@@ -15,7 +15,7 @@ Folder ini berisi firmware **LVGL 9 Widgets Demo** yang sudah jadi, untuk di-fla
 | `flash.bat` | — | Script bantu Windows |
 | `flash.sh` | — | Script bantu Linux/macOS |
 
-Firmware dibangun dari source terbaru repository ini, dengan tuning performa: **PCLK 15 MHz**, draw buffer **800×110 di RAM internal**, heap LVGL di **PSRAM**, refresh **16 ms**, dan flush pipelined — versi paling halus yang dicapai untuk board ini.
+Firmware dibangun dari source terbaru repository ini, dengan tuning performa: **PCLK 15 MHz**, draw buffer **800×60 (96 KB) di RAM internal**, heap LVGL **80 KB di RAM internal**, refresh **33 ms**, flush pipelined, dan overlay **FPS/CPU** aktif seperti demo manufaktur.
 
 ## Yang dibutuhkan
 

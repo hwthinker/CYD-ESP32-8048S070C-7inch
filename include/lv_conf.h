@@ -64,11 +64,6 @@
 /** Size of the pool `lv_malloc()` allocates from. Needs to be at least 2kB (2048). */
 #define LV_MEM_SIZE (80 * 1024)
 
-/** Alokasikan pool LVGL di PSRAM (8 MB) supaya RAM internal lega untuk
- *  draw buffer RGB yang besar. */
-#define LV_MEM_POOL_INCLUDE <esp_heap_caps.h>
-#define LV_MEM_POOL_ALLOC(size) heap_caps_malloc(size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT)
-
 /** Place the pool at a fixed address instead of allocating it as a normal array.
  *  0: unused.
  */
@@ -161,7 +156,7 @@
 #define LV_COLOR_MIX_ROUND_OFS 0
 
 /** Default display refresh, input device read and animation step period. */
-#define LV_DEF_REFR_PERIOD 16
+#define LV_DEF_REFR_PERIOD 33
 
 /** Used to initialize default sizes such as widget sizes and style paddings. */
 #define LV_DPI_DEF 130
@@ -2095,7 +2090,11 @@
 /** Periodically collect CPU, FPS and memory statistics and optionally show them in an
  *  on-screen overlay.
  */
-#define LV_USE_SYSMON 0
+#define LV_USE_SYSMON 1
+
+/** Bare-metal (LV_OS_NONE): pakai pengukuran idle sendiri agar CPU% valid.
+ *  Diimplementasikan di src/main.cpp (waktu lv_timer_handler vs total loop). */
+#define LV_SYSMON_GET_IDLE esp_sysmon_get_idle
 
 #if LV_USE_SYSMON
 /** The port provides `lv_os_get_proc_idle_percent` a per-process idle percentage
@@ -2104,7 +2103,7 @@
 #define LV_SYSMON_PROC_IDLE_AVAILABLE 0
 
 /** Show the CPU usage and FPS count in a label on the screen. */
-#define LV_USE_PERF_MONITOR 0
+#define LV_USE_PERF_MONITOR 1
 
 #if LV_USE_PERF_MONITOR
 /** Performance monitor position

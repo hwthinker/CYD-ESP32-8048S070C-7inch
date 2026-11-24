@@ -8,9 +8,9 @@
 #define DISPLAY_WIDTH 800
 #define DISPLAY_HEIGHT 480
 #define DISPLAY_SOFTWARE_ROTATION
-// Buffer render parsial besar di RAM internal (176 KB, ~1/4 layar seperti demo
-// manufaktur). Heap LVGL dipindah ke PSRAM agar RAM internal cukup.
-#define LVGL_BUFFER_PIXELS (DISPLAY_WIDTH*110)
+// Buffer render parsial di RAM internal (mengikuti demo manufaktur) agar tidak
+// berebut bandwidth PSRAM dengan framebuffer RGB saat scroll/animasi.
+#define LVGL_BUFFER_PIXELS (DISPLAY_WIDTH*60)
 #define LVGL_BUFFER_MALLOC_FLAGS (MALLOC_CAP_INTERNAL|MALLOC_CAP_8BIT)
 #define DISPLAY_BCKL 2
 #define DISPLAY_ST7262_PAR
